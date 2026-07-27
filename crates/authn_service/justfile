@@ -1,0 +1,56 @@
+export CARGO_TARGET_DIR := "../../target"
+
+db_host := "localhost"
+db_port := "5432"
+server_port := "3000"
+
+# List available commands
+help:
+    @just --list --unsorted --list-heading $'🛡AUTHN-SERVICE\n'
+
+# Run lints (cargo fmt and clippy)
+lint:
+    cargo +nightly fmt --package authn_service -- --check
+    cargo clippy --all-targets -- -D warnings
+
+# Run cargo check
+check:
+    cargo check
+
+# Run cargo build
+build:
+    cargo build --all-targets
+
+# Run cargo clean on the authn_service package
+clean:
+    cargo clean --package authn_service
+
+# Run cargo test
+test:
+    cargo test
+
+# Run DB migrate
+migration *cmd:
+    @export $(grep -v '^#' .env | xargs) && \
+    DB_HOST={{ db_host }} DB_PORT={{ db_port }} \
+    cargo run --bin migration -- migration {{cmd}}
+
+# Run server app
+app:
+    @export $(grep -v '^#' .env | xargs) && \
+    DB_HOST={{ db_host }} DB_PORT={{ db_port }} SERVER_PORT={{ server_port }} \
+    cargo run --bin app
+
+# Generate openapi.yaml
+apidoc:
+    cargo run --bin apidoc
+
+## =========================================================================
+
+# Run docker commands
+docker *cmd:
+    docker {{cmd}}
+
+# Build production distroless image
+build-for-prod:
+    docker build --build-context workspace_root=../../ -t authn-service-app -f prod.Dockerfile .

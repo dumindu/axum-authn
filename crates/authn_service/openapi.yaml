@@ -1,0 +1,45 @@
+openapi: 3.1.0
+info:
+  title: Authn Service API
+  description: ''
+  license:
+    name: ''
+  version: 1.0.0
+servers:
+- url: http://localhost:3000
+  description: Development
+paths: {}
+components:
+  schemas:
+    ErrorCode:
+      type: string
+      enum:
+      - DB_INSERT_FAILED
+      - DB_FETCH_FAILED
+      - DB_UPDATE_FAILED
+      - DB_DELETE_FAILED
+      - SERIALIZATION_FAILED
+      - DESERIALIZATION_FAILED
+      - INVALID_RESOURCE_ID
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorCode'
+      examples:
+      - '{"error": "DB_INSERT_FAILED"}'
+    ValidationErrorResponse:
+      type: object
+      required:
+      - errors
+      properties:
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+          propertyNames:
+            type: string
+      examples:
+      - '{ "errors": { "image_url": "Must be a valid URL", "title": "Must be at least 1 character long" } }'

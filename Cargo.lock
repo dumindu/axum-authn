@@ -221,6 +221,7 @@ dependencies = [
  "axum",
  "envconfig",
  "garde",
+ "jiff",
  "serde",
  "serde_json",
  "serde_path_to_error",
@@ -232,6 +233,7 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "utoipa",
+ "uuid",
 ]
 
 [[package]]

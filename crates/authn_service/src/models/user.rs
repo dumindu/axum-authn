@@ -6,8 +6,8 @@ use utoipa::ToSchema;
 use uuid::Uuid;
 
 #[derive(Debug, toasty::Model, Serialize, ToSchema)]
+#[unique(email)]
 pub struct User {
-    // Initial order for postgres columns by alignment(16-byte, 8-byte, 4-byte, 2-byte, 1-byte, then variable-length types)
     #[key]
     #[auto]
     #[schema(value_type = String, format = Uuid, examples("01bbbbbb-bbbb-7bbb-8bbb-bbbbbbbbbbbb"))]

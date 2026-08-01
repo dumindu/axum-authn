@@ -4,10 +4,15 @@ use jiff::Timestamp;
 use uuid::Uuid;
 
 #[derive(Debug, toasty::Model)]
+#[unique(provider, provider_sub_id)]
+#[index(user_id)]
 pub struct UserIdentity {
     #[key]
     pub id: Uuid,
+
     pub user_id: Uuid,
+
+    #[auto]
     pub created_at: Timestamp,
 
     pub provider: String,

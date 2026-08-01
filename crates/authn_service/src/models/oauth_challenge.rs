@@ -5,7 +5,10 @@ use uuid::Uuid;
 pub struct OauthChallenge {
     #[key]
     pub state: Uuid,
+
+    #[auto]
     pub created_at: Timestamp,
+
     pub expires_at: Timestamp,
 
     pub pkce_code_verifier: String,

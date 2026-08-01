@@ -6,8 +6,9 @@ use utoipa::ToSchema;
 use uuid::Uuid;
 
 #[derive(Debug, toasty::Model, Serialize, ToSchema)]
+#[unique(user_id, device_hash)]
+#[unique(credential_id)]
 pub struct UserDevice {
-    // Initial order for postgres columns by alignment(16-byte, 8-byte, 4-byte, 2-byte, 1-byte, then variable-length types)
     #[key]
     #[auto]
     #[schema(value_type = String, format = Uuid, examples("01bbbbbb-bbbb-7bbb-8bbb-bbbbbbbbbbbb"))]
@@ -20,9 +21,8 @@ pub struct UserDevice {
     #[schema(value_type = String, format = DateTime, examples("2026-07-06T13:38:00Z"))]
     pub created_at: Timestamp,
 
-    #[auto]
     #[schema(value_type = String, format = DateTime, examples("2026-07-06T13:38:00Z"))]
-    pub updated_at: Timestamp,
+    pub last_used_at: Timestamp,
 
     #[schema(example = "iPhone 18 Pro")]
     pub device_name: String,
@@ -37,7 +37,7 @@ pub struct UserDevice {
     pub public_key: Vec<u8>,
 
     #[serde(skip)]
-    pub signature_counter: i32,
+    pub signature_counter: u8,
 
     #[belongs_to(key = user_id, references = id)]
     #[serde(skip)]

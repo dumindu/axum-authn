@@ -2,8 +2,11 @@ use jiff::Timestamp;
 use uuid::Uuid;
 
 #[derive(Debug, toasty::Model)]
+#[index(expires_at)]
 pub struct WebauthnChallenge {
+    #[auto]
     pub created_at: Timestamp,
+
     pub expires_at: Timestamp,
 
     #[key]
@@ -11,5 +14,6 @@ pub struct WebauthnChallenge {
 
     pub user_id: Option<Uuid>,
     pub device_id: Option<Uuid>,
+    
     pub challenge_type: String,
 }

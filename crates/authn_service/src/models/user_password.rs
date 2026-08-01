@@ -7,7 +7,11 @@ use uuid::Uuid;
 pub struct UserPassword {
     #[key]
     pub user_id: Uuid,
+
+    #[auto]
     pub created_at: Timestamp,
+
+    #[auto]
     pub updated_at: Timestamp,
 
     pub password_hash: String,

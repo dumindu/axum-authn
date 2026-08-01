@@ -1,8 +1,8 @@
-use super::{User, UserDevice};
 use jiff::Timestamp;
 use uuid::Uuid;
 
 #[derive(Debug, toasty::Model)]
+#[index(user_id, device_id)]
 pub struct SecurityAuditLog {
     #[key]
     #[auto]
@@ -20,10 +20,4 @@ pub struct SecurityAuditLog {
 
     pub event_type: String,
     pub context: Option<String>,
-
-    #[belongs_to(key = user_id, references = id)]
-    pub user: toasty::Deferred<User>,
-
-    #[belongs_to(key = device_id, references = id)]
-    pub device: toasty::Deferred<Option<UserDevice>>
 }

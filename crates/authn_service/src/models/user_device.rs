@@ -1,43 +1,43 @@
+use super::User;
+
+use jiff::Timestamp;
 use serde::Serialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
 #[derive(Debug, toasty::Model, Serialize, ToSchema)]
 pub struct UserDevice {
+    // Initial order for postgres columns by alignment(16-byte, 8-byte, 4-byte, 2-byte, 1-byte, then variable-length types)
     #[key]
     #[auto]
-    #[serde(skip)]
+    #[schema(value_type = String, format = Uuid, examples("01bbbbbb-bbbb-7bbb-8bbb-bbbbbbbbbbbb"))]
     pub id: Uuid,
 
-    #[serde(skip)]
+    #[schema(value_type = String, format = Uuid, examples("01bbbbbb-bbbb-7bbb-8bbb-bbbbbbbbbbbb"))]
     pub user_id: Uuid,
 
-    /// SHA-256 output of device_id + salt
-    #[schema(value_type = String, format = Binary, example = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
-    pub device_hash: Vec<u8>,
+    #[auto]
+    #[schema(value_type = String, format = DateTime, examples("2026-07-06T13:38:00Z"))]
+    pub created_at: Timestamp,
+
+    #[auto]
+    #[schema(value_type = String, format = DateTime, examples("2026-07-06T13:38:00Z"))]
+    pub updated_at: Timestamp,
 
     #[schema(example = "iPhone 18 Pro")]
     pub device_name: String,
 
-    /// Base64URL string (without padding) of WebAuthn Credential ID
-    #[schema(value_type = String, format = Binary, example = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")]
+    #[serde(skip)]
+    pub device_hash: Vec<u8>,
+
+    #[serde(skip)]
     pub credential_id: Vec<u8>,
 
-    /// Public key DER/COSE binary configuration slice validated directly via aws-lc-rs
-    #[schema(value_type = String, format = Binary, example = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")]
+    #[serde(skip)]
     pub public_key: Vec<u8>,
 
-    /// Anti-cloning monotonic chip validation transaction execution tracking sequence counter
-    #[schema(example = 42)]
+    #[serde(skip)]
     pub signature_counter: i32,
-
-    /// Registration timestamp marker
-    #[schema(value_type = String, example = "2026-07-29T13:30:00Z")]
-    pub created_at: Timestamp,
-
-    /// Last active runtime cryptographic usage handshake occurrence timestamp
-    #[schema(value_type = String, example = "2026-07-29T13:30:00Z")]
-    pub last_used_at: Timestamp,
 
     #[belongs_to(key = user_id, references = id)]
     #[serde(skip)]

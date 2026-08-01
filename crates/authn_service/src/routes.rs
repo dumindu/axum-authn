@@ -15,7 +15,7 @@ use tower_http::{
 };
 use tracing::{Span, info, info_span};
 
-use crate::{state::AppState};
+use crate::state::AppState;
 
 const REQUEST_ID_HEADER: &str = "x-request-id";
 
@@ -55,53 +55,27 @@ pub fn init(state: AppState) -> Router {
         .layer(cors_layer(&state));
 
     Router::new()
-        // .route("/livez", get(livez))
+        .route("/livez", get(livez))
         // .route("/login", post(login::login))
         // .route("/reset-password", post(password::trigger_reset_password).put(password_reset::reset_password))
-        // .route("/social/state", post(state::state))// can state::state reexport as state
-        // .route("/social/google/login", post(google::login))// can google::login reexport as login_with_google
-        // .route("/social/apple/login", post(apple::login))// can apple::login reexport as login_with_google
-        //
+        // .route("/change-password", put(password::change_password))
+        // .route("/set-password", post(password::set_password))
         // .route("/passkey/challenge", post(passkey::challenge))
         // .route("/passkey/register", post(passkey::register))
         // .route("/passkey/authenticate", post(passkey::authenticate))
-        //
-        // // PROTECTED
+        // .route("/oauth/challenge", post(oauth_challenge::challenge))
+        // .route("/oauth/google/login", post(google::login))
+        // .route("/oauth/apple/login", post(apple::login))
+        // .route("/oauth/google/native/login", post(google::native_login))
+        // .route("/oauth/apple/native/login", post(apple::native_login))
+        // .route("/oauth/google/connect", post(google::connect))
+        // .route("/oauth/apple/connect", post(apple::connect))
         // .route("/refresh", post(refresh::refresh))
-        // .route("/change-password", put(password::change_password))
-        // .route("/set-password", post(password::set_password))
-        // .route("/social/google/connect", post(google::connect))// can google::connect reexport as connect_to_google
-        // .route("/social/apple/connect", post(apple::connect))// can apple::connect reexport as connect_to_apple
         // .route("/logout", post(logout::logout))
         .layer(DefaultBodyLimit::max(state.server_conf.default_body_limit))
         .layer(middleware)
         .with_state(state)
 }
-
-// src/features/authn/mod.rs
-use axum::{routing::{get, post, put}, Router};
-
-pub fn router() -> Router<()> {
-    Router::new()
-        .route("/login", post(login::login))
-        .route("/reset-password", post(password::trigger_reset_password).put(password_reset::reset_password))
-        .route("/social/state", post(state::state))// can state::state reexport as state
-        .route("/social/google/login", post(google::login))// can google::login reexport as login_with_google
-        .route("/social/apple/login", post(apple::login))// can apple::login reexport as login_with_google
-
-        .route("/passkey/challenge", post(passkey::challenge))
-        .route("/passkey/register", post(passkey::register))
-        .route("/passkey/authenticate", post(passkey::authenticate))
-
-        // PROTECTED
-        .route("/refresh", post(refresh::refresh))
-        .route("/change-password", put(password::change_password))
-        .route("/set-password", post(password::set_password))
-        .route("/social/google/connect", post(google::connect))// can google::connect reexport as connect_to_google
-        .route("/social/apple/connect", post(apple::connect))// can apple::connect reexport as connect_to_apple
-        .route("/logout", post(logout::logout))
-}
-
 
 async fn livez() -> impl IntoResponse {
     StatusCode::OK

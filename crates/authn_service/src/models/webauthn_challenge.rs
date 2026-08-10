@@ -9,11 +9,12 @@ pub struct WebauthnChallenge {
 
     pub expires_at: Timestamp,
 
+    pub user_id: Option<Uuid>,
+
+    pub device_id: Option<Uuid>,
+
     #[key]
     pub challenge_token: Vec<u8>,
 
-    pub user_id: Option<Uuid>,
-    pub device_id: Option<Uuid>,
-    
     pub challenge_type: String,
 }

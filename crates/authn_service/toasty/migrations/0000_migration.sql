@@ -60,6 +60,7 @@ CREATE TABLE "oauth_challenges" (
     "created_at" TIMESTAMPTZ(6) NOT NULL,
     "expires_at" TIMESTAMPTZ(6) NOT NULL,
     "state" UUID NOT NULL,
+    "nonce" UUID,
     "pkce_code_verifier" TEXT NOT NULL,
     "client_redirect_uri" TEXT NOT NULL,
     "provider" TEXT NOT NULL,

@@ -10,6 +10,7 @@ pub struct OauthChallenge {
 
     #[key]
     pub state: Uuid,
+    pub nonce: Option<Uuid>,
 
     pub pkce_code_verifier: String,
 

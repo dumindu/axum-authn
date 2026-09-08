@@ -27,24 +27,31 @@ storage_ty = "Uuid"
 
 [[schema.tables.columns]]
 id = { table = 0, index = 3 }
+name = "nonce"
+ty = "Uuid"
+storage_ty = "Uuid"
+nullable = true
+
+[[schema.tables.columns]]
+id = { table = 0, index = 4 }
 name = "pkce_code_verifier"
 ty = "String"
 storage_ty = "Text"
 
 [[schema.tables.columns]]
-id = { table = 0, index = 4 }
+id = { table = 0, index = 5 }
 name = "client_redirect_uri"
 ty = "String"
 storage_ty = "Text"
 
 [[schema.tables.columns]]
-id = { table = 0, index = 5 }
+id = { table = 0, index = 6 }
 name = "provider"
 ty = "String"
 storage_ty = "Text"
 
 [[schema.tables.columns]]
-id = { table = 0, index = 6 }
+id = { table = 0, index = 7 }
 name = "flow_type"
 ty = "String"
 storage_ty = "Text"
